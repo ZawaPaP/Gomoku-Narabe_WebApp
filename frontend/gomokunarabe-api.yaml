@@ -1,0 +1,240 @@
+openapi: 3.0.3
+info:
+  title: GomokuNarabe API
+  version: 1.0.0
+paths:
+  /games:
+    post:
+      summary: Create a game
+      operationId: createGame
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGameRequest"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateGameResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /games/{gameId}:
+    get:
+      summary: Get a game by ID
+      operationId: getGame
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetGameResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      summary: Update a game by ID
+      operationId: updateGame
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGameRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateGameResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /add_move/{gameId}:
+    post:
+      summary: Add a move to a game
+      operationId: addMove
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddMoveRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AddMoveResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    CreateGameRequest:
+      type: object
+      properties:
+        player1:
+          type: string
+        player2:
+          type: string
+      required:
+        - player1
+        - player2
+    CreateGameResponse:
+      type: object
+      properties:
+        game_id:
+          type: string
+    GetGameResponse:
+      type: object
+      properties:
+        game_id:
+          type: string
+        player1:
+          type: string
+        player2:
+          type: string
+        board:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+    UpdateGameRequest:
+      type: object
+      properties:
+        player1:
+          type: string
+        player2:
+          type: string
+        board:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+    UpdateGameResponse:
+      type: object
+      properties:
+        game_id:
+          type: string
+        player1:
+          type: string
+        player2:
+          type: string
+        board:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+    AddMoveRequest:
+      type: object
+      properties:
+        player:
+          type: string
+        x:
+          type: integer
+        y:
+          type: integer
+      required:
+        - player
+        - x
+        - y
+    AddMoveResponse:
+      type: object
+      properties:
+        game_id:
+          type: string
+        player1:
+          type: string
+        player2:
+          type: string
+        board:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string

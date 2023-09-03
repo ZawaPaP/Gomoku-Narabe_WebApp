@@ -4,12 +4,12 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r"players", views.PlayerViewSet)
-router.register(r"boards", views.BoardViewSet)
+router.register(r"game", views.GameViewSet)
+router.register(r"board", views.BoardViewSet)
 
 
 urlpatterns = [
     path("", views.index, name = "index"), 
     path("api/", include(router.urls)),
-    path("create_player", views.create_player, name = "create_player"),
-    path("game_status/<int:game_id>", views.game_status, name = "game_status"),
+    path("add_move/<int:game_id>", views.AddMoveView.as_view(), name = "add_move"),
 ]
